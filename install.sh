@@ -9,7 +9,7 @@ sudo cp /boot/arm240_start.elf /boot/start.elf
 echo "Add www-data to www-data group..."
 sudo usermod -a -G www-data www-data
 echo "Installing packages..."
-sudo apt-get install -y nginx openssl ssl-cert php5-cli php5-sqlite php5-gd php5-common php5-cgi sqlite3 php-pear php-apcu curl libapr1 libtool curl libcurl4-openssl-dev php-xml-parser php5 php5-dev php5-curl php5-gd php5-fpm memcached php5-xcache varnish smbclient
+sudo apt-get install -y nginx openssl ssl-cert php7-cli php7-sqlite php7-cgi sqlite3 php-pear php-apcu curl libapr1 libtool curl libcurl4-openssl-dev php-xml-parser php7 php7-dev php7-curl php7-gd php7-fpm memcached php7-xcache varnish smbclient
 echo "Creating ssl certificate..."
 sudo openssl req $@ -new -x509 -days 730 -nodes -out /etc/nginx/cert.pem -keyout /etc/nginx/cert.key
 sudo chmod 600 /etc/nginx/cert.pem
@@ -33,7 +33,7 @@ done
 
 SERVERCONFIG="upstream php-handler {
     server 127.0.0.1:9000;
-    #server unix:/var/run/php5-fpm.sock;
+    #server unix:/var/run/php7-fpm.sock;
 }
 server {
     listen 80;
@@ -94,9 +94,9 @@ echo "$SERVERCONFIG" > /etc/nginx/sites-available/default
 sudo chmod 644 /etc/nginx/sites-available/default
 
 echo "Configuring PHP and other stuff..."
-sudo sed -i 's/^upload_max_filesize.*$/upload_max_filesize = 2000M/' /etc/php5/fpm/php.ini
-sudo sed -i 's/^post_max_size.*$/post_max_size = 2000M/' /etc/php5/fpm/php.ini
-sudo sed -i 's/^listen.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
+sudo sed -i 's/^upload_max_filesize.*$/upload_max_filesize = 2000M/' /etc/php7/fpm/php.ini
+sudo sed -i 's/^post_max_size.*$/post_max_size = 2000M/' /etc/php7/fpm/php.ini
+sudo sed -i 's/^listen.*$/listen = 127.0.0.1:9000/' /etc/php7/fpm/pool.d/www.conf
 sudo sed -i 's/^CONF_SWAPSIZE.*$/CONF_SWAPSIZE = 512/' /etc/dphys-swapfile
 echo "Done."
 
