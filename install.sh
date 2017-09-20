@@ -16,6 +16,10 @@ apache2 mariadb-server libapache2-mod-php7.0 \
     php7.0-zip php7.0-xml php7.0-mbstring \
     php7.0-sqlite sqlite3 \
 
+sudo apt-get install -y \
+    php-apcu php-redis redis-server \
+    php7.0-ldap php-smbclient
+
 while true; do
   echo "Enter your Raspberry Pi's IP address"
   read ipadd
@@ -29,7 +33,13 @@ while true; do
   fi
 done
 
-SERVERCONFIG="Alias /owncloud /var/www/owncloud/
+SERVERCONFIG="<VirtualHost *:80>
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/owncloud
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
 <Directory /var/www/owncloud/>
 Options +FollowSymlinks
 AllowOverride All
@@ -41,12 +51,13 @@ Dav off
 SetEnv HOME /var/www/owncloud
 SetEnv HTTP_HOME /var/www/owncloud
 
-</Directory>"
+</Directory>
+</VirtualHost>"
 
-sudo touch /etc/apache2/sites-available/owncloud.conf
-sudo chmod 666 /etc/apache2/sites-available/owncloud.conf
-echo "$SERVERCONFIG" > /etc/apache2/sites-available/owncloud.conf
-sudo chmod 644 /etc/apache2/sites-available/owncloud.conf
+#sudo touch /etc/apache2/sites-available/default.conf
+sudo chmod 666 /etc/apache2/sites-available/000-default.conf
+echo "$SERVERCONFIG" > /etc/apache2/sites-available/000-default.conf
+sudo chmod 644 /etc/apache2/sites-available000-default.conf
 
 a2enmod rewrite
 
@@ -56,8 +67,8 @@ a2enmod dir
 a2enmod mime
 
 echo "Configuring PHP and other stuff..."
-#sudo sed -i 's/^upload_max_filesize.*$/upload_max_filesize = 2000M/' /etc/php7/fpm/php.ini
-#sudo sed -i 's/^post_max_size.*$/post_max_size = 2000M/' /etc/php7/fpm/php.ini
+sudo sed -i 's/^upload_max_filesize.*$/upload_max_filesize = 2000M/' /etc/php/7.0/apache2/php.ini
+sudo sed -i 's/^post_max_size.*$/post_max_size = 2000M/' /etc/php/7.0/apache2/php.ini
 #sudo sed -i 's/^listen.*$/listen = 127.0.0.1:9000/' /etc/php7/fpm/pool.d/www.conf
 #sudo sed -i 's/^CONF_SWAPSIZE.*$/CONF_SWAPSIZE = 512/' /etc/dphys-swapfile
 echo "Done."
