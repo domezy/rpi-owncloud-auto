@@ -9,7 +9,7 @@ sudo cp /boot/arm240_start.elf /boot/start.elf
 echo "Add www-data to www-data group..."
 sudo usermod -a -G www-data www-data
 echo "Installing packages..."
-sudo apt-get --yes --force-yes install nginx openssl ssl-cert php5-cli php5-sqlite php5-gd php5-common php5-cgi sqlite3 php-pear php-apcu curl libapr1 libtool curl libcurl4-openssl-dev php-xml-parser php5 php5-dev php5-curl php5-gd php5-fpm memcached php5-xcache varnish smbclient
+sudo apt-get install -y nginx openssl ssl-cert php5-cli php5-sqlite php5-gd php5-common php5-cgi sqlite3 php-pear php-apcu curl libapr1 libtool curl libcurl4-openssl-dev php-xml-parser php5 php5-dev php5-curl php5-gd php5-fpm memcached php5-xcache varnish smbclient
 echo "Creating ssl certificate..."
 sudo openssl req $@ -new -x509 -days 730 -nodes -out /etc/nginx/cert.pem -keyout /etc/nginx/cert.key
 sudo chmod 600 /etc/nginx/cert.pem
