@@ -1,11 +1,11 @@
 #!/bin/bash
 echo "Installing owncloud..."
-sudo mkdir -p /var/www/owncloud
+#sudo mkdir -p /var/www/owncloud
 sudo wget https://download.owncloud.org/community/owncloud-10.0.2.tar.bz2
 sudo tar xvf owncloud-10.0.2.tar.bz2
-sudo mv owncloud/ /var/www/
-sudo chown -R www-data:www-data /var/www
-rm -rf owncloud owncloud-10.0.2.tar.bz2
+sudo mv owncloud /var/www/
+sudo chown -R www-data:www-data /var/www/owncloud
+#rm -rf owncloud owncloud-10.0.2.tar.bz2
 echo "Done."
 echo "Configuring owncloud..."
 sudo sed -i 's/^php_value_upload_max_filesize.*$/php_value_upload_max_filesize = 2000M/' /var/www/owncloud/.htaccess

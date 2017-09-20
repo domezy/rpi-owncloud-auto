@@ -14,8 +14,9 @@ apache2 mariadb-server libapache2-mod-php7.0 \
     php7.0-gd php7.0-json php7.0-mysql php7.0-curl \
     php7.0-intl php7.0-mcrypt php-imagick \
     php7.0-zip php7.0-xml php7.0-mbstring \
-    php7.0-sqlite sqlite3 \
+    php7.0-sqlite sqlite3 phpmyadmin \
 
+echo "Install additional Extensions..."
 sudo apt-get install -y \
     php-apcu php-redis redis-server \
     php7.0-ldap php-smbclient
@@ -59,8 +60,8 @@ sudo chmod 666 /etc/apache2/sites-available/000-default.conf
 echo "$SERVERCONFIG" > /etc/apache2/sites-available/000-default.conf
 sudo chmod 644 /etc/apache2/sites-available000-default.conf
 
+echo "Additional Apache Configurations"
 a2enmod rewrite
-
 a2enmod headers
 a2enmod env
 a2enmod dir
